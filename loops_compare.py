@@ -2,7 +2,6 @@ import timeit
 
 N = 100000000
 
-
 def while_loop():
     i = 0
     while i < N:
