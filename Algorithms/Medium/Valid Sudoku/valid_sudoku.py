@@ -13,11 +13,11 @@ class Solution:
             for j in range(0, 9):
                 if board[i][j] == ".":
                     continue
-                # check cell
+                # checking cell
                 if board[i][j] in cells[int(i/3)][int(j/3)]:
                     return False
                 cells[int(i/3)][int(j/3)][board[i][j]] = None
-                # create a column dict
+                # creating a column dict
                 if j not in column_dict:
                     column_dict[j] = {}
                 # checking column
