@@ -13,7 +13,40 @@ class Solution:
             nums[index] = nums[index] + max(next)
         return nums[0]
 
-# alot of memory
+# faster, but still slow
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        if len(nums) < 1:
+            return 0
+        if len(nums) < 3 or k < 2:
+            return sum(nums)
+        score = nums[0]
+        last = nums[0]
+        index = 0
+        while index < len(nums) - 1:
+            pos = False
+            for i in range(index + 1, min(len(nums), index + k + 1)):
+                if nums[i] >= 0 or i == len(nums) - 1:
+                    score = score + nums[i]
+                    last = nums[i]
+                    index = i
+                    pos = True
+                    break
+            if pos:
+                continue
+            for j in range(min(len(nums), index + k + 1), len(nums)):
+                if nums[j] > 0 or j == len(nums) - 1:
+                    n = nums[index: j + 1]
+                    for i in range(1, len(n)):
+                        index = len(n) - 1 - i
+                        next = n[index + 1:min(len(n), index + k + 1)]
+                        n[index] = n[index] + max(next)
+                    score = score + n[0] - last
+                    index = j
+                    break   
+        return score
+
+# slower, alot of memory
 class Solution:
     def maxResult(self, nums: List[int], k: int) -> int:
         if len(nums) < 1:
@@ -24,9 +57,9 @@ class Solution:
                 return nums[0]
             if index in seen:
                 return seen[index]
-            for i in range(1, min(len(nums), k + 1)):
-                if nums[i] > 0:
-                    return nums[0] + m(index + i, nums[i:])
+            #for i in range(1, min(len(nums), k + 1)):
+                #if nums[i] > 0:
+                    #return nums[0] + m(index + i, nums[i:])
             seen[index] = nums[0] + max([m(index + i, nums[i:]) for i in range(1, min(len(nums), k + 1))])
             return seen[index] 
         return m(0, nums)
