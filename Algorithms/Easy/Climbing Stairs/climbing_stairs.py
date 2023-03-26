@@ -1,17 +1,28 @@
 class Solution:
     def climbStairs(self, n: int) -> int:
+        cache: dict[int, int] = {}
+
         def fac(n: int) -> int:
             if n < 1:
                 return 1
-            return n * fac(n - 1)
+
+            if n in cache:
+                return cache[n]
+
+            cache[n] = n * fac(n - 1)
+
+            return cache[n]
 
         ones = n
-        sum, twos = (0, 0)
+        twos = 0
+        sum = 0
+
         while ones > -1:
             perm = fac(ones + twos) // (fac(ones) * fac(twos))
-            sum = sum + perm
-            ones = ones - 2
-            twos = twos + 1
+            sum += perm
+            ones -= 2
+            twos += 1
+
         return sum
 
 
